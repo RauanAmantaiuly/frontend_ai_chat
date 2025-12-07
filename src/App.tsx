@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { RegisterPage } from "./pages/RegisterPage";
 import { UploadPage } from "./pages/UploadPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { LoginPage } from "./pages/LoginPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/upload" element={<UploadPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>
   );

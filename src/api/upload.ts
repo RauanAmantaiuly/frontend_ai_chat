@@ -12,8 +12,17 @@ export type UploadedDocument = DocumentPayload & {
 };
 
 export async function fetchDocuments(): Promise<UploadedDocument[]> {
-  const response = await fetch("http://localhost:4321/upload");
+  const accessToken = localStorage.getItem("access_token");
 
+  if (!accessToken) {
+    throw new Error("Missing access token. Please log in again.");
+  }
+
+  const response = await fetch("http://localhost:4321/upload", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
   if (!response.ok) {
     throw new Error("Failed to fetch documents");
   }

@@ -2,6 +2,25 @@ import { useEffect, useState } from "react";
 import type { DocumentPayload, UploadedDocument } from "../api/upload";
 import { fetchDocuments, uploadDocument } from "../api/upload";
 
+type ProvidedDocument = {
+  UserID: string;
+  DocumentID: string;
+  DocumentName: string;
+};
+
+const providedDocuments: ProvidedDocument[] = [
+  {
+    UserID: "84013e88-075d-4abe-8b3f-e6d7b0eead67",
+    DocumentID: "5de15f7c-633c-4d88-a023-498c856603ce",
+    DocumentName: "document name"
+  },
+  {
+    UserID: "84013e88-075d-4abe-8b3f-e6d7b0eead67",
+    DocumentID: "09a8202a-3d0b-44a9-81de-0d6ecc0ed9e0",
+    DocumentName: "openCV script"
+  }
+];
+
 const initialForm: DocumentPayload = {
   id: "",
   request_id: "",
@@ -77,6 +96,26 @@ export function UploadPage() {
           <div className="card shadow-sm h-100">
             <div className="card-body">
               <h3 className="card-title mb-3">Uploaded Documents</h3>
+              <div className="alert alert-info">
+                <h6 className="mb-3">Provided Document Details</h6>
+                <p className="mb-3">The following records are available:</p>
+                <div className="list-group">
+                  {providedDocuments.map((doc) => (
+                    <div
+                      key={doc.DocumentID}
+                      className="list-group-item list-group-item-action"
+                    >
+                      <div className="d-flex justify-content-between align-items-start">
+                        <div>
+                          <div className="fw-semibold">{doc.DocumentName}</div>
+                          <div className="small text-muted">Document ID: {doc.DocumentID}</div>
+                        </div>
+                        <span className="badge text-bg-light text-dark">User: {doc.UserID}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
               {loading && <p className="text-muted">Loading documents...</p>}
               {error && <div className="alert alert-danger">{error}</div>}
               {!loading && !error && documents.length === 0 && (
