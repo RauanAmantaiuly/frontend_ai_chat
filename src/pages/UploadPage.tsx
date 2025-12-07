@@ -129,8 +129,9 @@ export function UploadPage() {
                   >
                     <div className="d-flex w-100 justify-content-between align-items-center">
                       <div>
-                        <h5 className="mb-1">{doc.name || "Untitled"}</h5>
-                        <small className="text-muted">Company: {doc.company_id}</small>
+                        <h5 className="mb-1">Document Name: {doc.name || "Untitled"}</h5>
+                        <div className="small text-muted">Document ID: {doc.id || "N/A"}</div>
+                        <div className="small text-muted">Company: {doc.company_id}</div>
                       </div>
                       {doc.priority && <span className="badge text-bg-primary">Priority</span>}
                     </div>
