@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  DocumentPayload,
-  UploadedDocument,
-  fetchDocuments,
-  uploadDocument
-} from "../api/upload";
+import type { DocumentPayload, UploadedDocument } from "../api/upload";
+import { fetchDocuments, uploadDocument } from "../api/upload";
 
 const initialForm: DocumentPayload = {
   id: "",
@@ -44,10 +40,14 @@ export function UploadPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, checked } = e.target;
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    const { name, value } = target;
+    const isCheckbox =
+      target instanceof HTMLInputElement && target.type === "checkbox";
+
     setForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: isCheckbox ? target.checked : value
     }));
   };
 
