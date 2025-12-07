@@ -30,10 +30,13 @@ export async function fetchDocuments(): Promise<UploadedDocument[]> {
 }
 
 export async function uploadDocument(payload: DocumentPayload) {
+  const accessToken = localStorage.getItem("access_token");
+
   const response = await fetch("http://localhost:4321/upload", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
     },
     body: JSON.stringify(payload)
   });
