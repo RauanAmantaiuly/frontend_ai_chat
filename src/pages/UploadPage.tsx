@@ -1,3 +1,4 @@
+import type React from "react";
 import { useEffect, useState } from "react";
 import type { DocumentPayload, UploadedDocument } from "../api/upload";
 import { fetchDocuments, uploadDocument } from "../api/upload";
@@ -29,6 +30,35 @@ const initialForm: DocumentPayload = {
   company_id: "",
   priority: false
 };
+
+type DocumentListProps = {
+  title: string;
+  documents: { name?: string; id?: string }[];
+  emptyMessage: string;
+};
+
+function DocumentList({ title, documents, emptyMessage }: DocumentListProps) {
+  return (
+    <div className="mb-4">
+      <h6 className="text-uppercase text-muted small fw-semibold mb-2">{title}</h6>
+      {documents.length === 0 ? (
+        <p className="text-muted mb-0 small">{emptyMessage}</p>
+      ) : (
+        <ul className="list-group list-group-flush border rounded">
+          {documents.map((doc, index) => (
+            <li
+              key={`${doc.id ?? doc.name ?? "doc"}-${index}`}
+              className="list-group-item py-3"
+            >
+              <div className="fw-semibold">Document name: {doc.name?.trim() || "Untitled"}</div>
+              <div className="text-muted small">Document ID: {doc.id || "N/A"}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export function UploadPage() {
   const [documents, setDocuments] = useState<UploadedDocument[]>([]);
@@ -78,9 +108,9 @@ export function UploadPage() {
 
     try {
       await uploadDocument(form);
+      await loadDocuments();
       setSuccessMessage("Document uploaded successfully");
       setForm(initialForm);
-      loadDocuments();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Upload failed";
       setError(message);
@@ -95,49 +125,35 @@ export function UploadPage() {
         <div className="col-lg-6">
           <div className="card shadow-sm h-100">
             <div className="card-body">
-              <h3 className="card-title mb-3">Uploaded Documents</h3>
-              <div className="mb-3">
-                <h6 className="mb-3">Provided Documents</h6>
-                <div className="list-group">
-                  {providedDocuments.map((doc) => (
-                    <div key={doc.DocumentID} className="list-group-item">
-                      <div className="fw-semibold mb-1">
-                        Document name: {doc.DocumentName}
-                      </div>
-                      <div className="small text-muted">Document ID: {doc.DocumentID}</div>
-                      <div className="small text-muted">User: {doc.UserID}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {loading && <p className="text-muted">Loading documents...</p>}
-              {error && <div className="alert alert-danger">{error}</div>}
-              {!loading && !error && documents.length === 0 && (
-                <p className="text-muted">No documents uploaded yet.</p>
+              <h3 className="card-title mb-3">Documents</h3>
+              <DocumentList
+                title="Provided documents"
+                documents={providedDocuments.map((doc) => ({
+                  id: doc.DocumentID,
+                  name: doc.DocumentName
+                }))}
+                emptyMessage="No provided documents."
+              />
+              {loading && (
+                <p className="text-muted mb-0" aria-live="polite">
+                  Loading documents...
+                </p>
               )}
-              <div className="list-group">
-                {documents.map((doc) => (
-                  <div
-                    key={doc.id + doc.request_id}
-                    className="list-group-item list-group-item-action"
-                  >
-                    <div className="d-flex w-100 justify-content-between align-items-center">
-                      <div>
-                        <h5 className="mb-1">Document name: {doc.name || "Untitled"}</h5>
-                        <div className="small text-muted">Document ID: {doc.id || "N/A"}</div>
-                        <div className="small text-muted">Company: {doc.company_id}</div>
-                      </div>
-                      {doc.priority && <span className="badge text-bg-primary">Priority</span>}
-                    </div>
-                    <p className="mb-1 small text-break">{doc.document}</p>
-                    <small className="text-muted">Request ID: {doc.request_id}</small>
-                    {doc.created_at && (
-                      <div className="small text-muted">Uploaded: {doc.created_at}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
+              {error && (
+                <div className="alert alert-danger" role="alert" aria-live="assertive">
+                  {error}
+                </div>
+              )}
+              {!loading && !error && (
+                <DocumentList
+                  title="Uploaded documents"
+                  documents={documents.map((doc) => ({
+                    id: doc.id,
+                    name: doc.name
+                  }))}
+                  emptyMessage="No documents uploaded yet."
+                />
+              )}
             </div>
           </div>
         </div>
@@ -145,7 +161,7 @@ export function UploadPage() {
         <div className="col-lg-6">
           <div className="card shadow-sm h-100">
             <div className="card-body">
-              <h3 className="card-title mb-3">Upload New Document</h3>
+              <h3 className="card-title mb-3">Upload new document</h3>
               <form onSubmit={handleSubmit} className="needs-validation" noValidate>
                 <div className="mb-3">
                   <label className="form-label" htmlFor="id">
@@ -238,7 +254,13 @@ export function UploadPage() {
               </form>
 
               {successMessage && (
-                <div className="alert alert-success mt-3">{successMessage}</div>
+                <div
+                  className="alert alert-success mt-3"
+                  role="alert"
+                  aria-live="polite"
+                >
+                  {successMessage}
+                </div>
               )}
             </div>
           </div>
