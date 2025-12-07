@@ -1,5 +1,4 @@
 export type DocumentPayload = {
-  id: string;
   request_id: string;
   document: string;
   name: string;

@@ -3,27 +3,7 @@ import { useEffect, useState } from "react";
 import type { DocumentPayload, UploadedDocument } from "../api/upload";
 import { fetchDocuments, uploadDocument } from "../api/upload";
 
-type ProvidedDocument = {
-  UserID: string;
-  DocumentID: string;
-  DocumentName: string;
-};
-
-const providedDocuments: ProvidedDocument[] = [
-  {
-    UserID: "84013e88-075d-4abe-8b3f-e6d7b0eead67",
-    DocumentID: "5de15f7c-633c-4d88-a023-498c856603ce",
-    DocumentName: "document name"
-  },
-  {
-    UserID: "84013e88-075d-4abe-8b3f-e6d7b0eead67",
-    DocumentID: "09a8202a-3d0b-44a9-81de-0d6ecc0ed9e0",
-    DocumentName: "openCV script"
-  }
-];
-
 const initialForm: DocumentPayload = {
-  id: "",
   request_id: "",
   document: "",
   name: "",
@@ -126,14 +106,6 @@ export function UploadPage() {
           <div className="card shadow-sm h-100">
             <div className="card-body">
               <h3 className="card-title mb-3">Documents</h3>
-              <DocumentList
-                title="Provided documents"
-                documents={providedDocuments.map((doc) => ({
-                  id: doc.DocumentID,
-                  name: doc.DocumentName
-                }))}
-                emptyMessage="No provided documents."
-              />
               {loading && (
                 <p className="text-muted mb-0" aria-live="polite">
                   Loading documents...
@@ -148,7 +120,6 @@ export function UploadPage() {
                 <DocumentList
                   title="Uploaded documents"
                   documents={documents.map((doc) => ({
-                    id: doc.id,
                     name: doc.name
                   }))}
                   emptyMessage="No documents uploaded yet."
@@ -163,19 +134,6 @@ export function UploadPage() {
             <div className="card-body">
               <h3 className="card-title mb-3">Upload new document</h3>
               <form onSubmit={handleSubmit} className="needs-validation" noValidate>
-                <div className="mb-3">
-                  <label className="form-label" htmlFor="id">
-                    Document ID
-                  </label>
-                  <input
-                    className="form-control"
-                    id="id"
-                    name="id"
-                    value={form.id}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
 
                 <div className="mb-3">
                   <label className="form-label" htmlFor="request_id">
