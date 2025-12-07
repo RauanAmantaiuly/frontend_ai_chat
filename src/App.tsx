@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { RegisterPage } from "./pages/RegisterPage";
+import { UploadPage } from "./pages/UploadPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -25,6 +26,9 @@ function App() {
                 <a className="nav-link" href="/register">Register</a>
               </li>
               <li className="nav-item">
+                <a className="nav-link" href="/upload">Upload</a>
+              </li>
+              <li className="nav-item">
                 <a className="nav-link" href="/login">Login</a>
               </li>
             </ul>
@@ -35,6 +39,7 @@ function App() {
       {/* ROUTES */}
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/upload" element={<UploadPage />} />
       </Routes>
     </>
   );

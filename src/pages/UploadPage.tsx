@@ -1,0 +1,214 @@
+import { useEffect, useState } from "react";
+import {
+  DocumentPayload,
+  UploadedDocument,
+  fetchDocuments,
+  uploadDocument
+} from "../api/upload";
+
+const initialForm: DocumentPayload = {
+  id: "",
+  request_id: "",
+  document: "",
+  name: "",
+  company_id: "",
+  priority: false
+};
+
+export function UploadPage() {
+  const [documents, setDocuments] = useState<UploadedDocument[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState<DocumentPayload>(initialForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const loadDocuments = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchDocuments();
+      setDocuments(data);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to load documents";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadDocuments();
+  }, []);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      await uploadDocument(form);
+      setSuccessMessage("Document uploaded successfully");
+      setForm(initialForm);
+      loadDocuments();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Upload failed";
+      setError(message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="container py-4">
+      <div className="row g-4">
+        <div className="col-lg-6">
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h3 className="card-title mb-3">Uploaded Documents</h3>
+              {loading && <p className="text-muted">Loading documents...</p>}
+              {error && <div className="alert alert-danger">{error}</div>}
+              {!loading && !error && documents.length === 0 && (
+                <p className="text-muted">No documents uploaded yet.</p>
+              )}
+              <div className="list-group">
+                {documents.map((doc) => (
+                  <div
+                    key={doc.id + doc.request_id}
+                    className="list-group-item list-group-item-action"
+                  >
+                    <div className="d-flex w-100 justify-content-between align-items-center">
+                      <div>
+                        <h5 className="mb-1">{doc.name || "Untitled"}</h5>
+                        <small className="text-muted">Company: {doc.company_id}</small>
+                      </div>
+                      {doc.priority && <span className="badge text-bg-primary">Priority</span>}
+                    </div>
+                    <p className="mb-1 small text-break">{doc.document}</p>
+                    <small className="text-muted">Request ID: {doc.request_id}</small>
+                    {doc.created_at && (
+                      <div className="small text-muted">Uploaded: {doc.created_at}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-6">
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h3 className="card-title mb-3">Upload New Document</h3>
+              <form onSubmit={handleSubmit} className="needs-validation" noValidate>
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="id">
+                    Document ID
+                  </label>
+                  <input
+                    className="form-control"
+                    id="id"
+                    name="id"
+                    value={form.id}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="request_id">
+                    Request ID
+                  </label>
+                  <input
+                    className="form-control"
+                    id="request_id"
+                    name="request_id"
+                    value={form.request_id}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="name">
+                    Name
+                  </label>
+                  <input
+                    className="form-control"
+                    id="name"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="company_id">
+                    Company ID
+                  </label>
+                  <input
+                    className="form-control"
+                    id="company_id"
+                    name="company_id"
+                    value={form.company_id}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="document">
+                    Document Content
+                  </label>
+                  <textarea
+                    className="form-control"
+                    id="document"
+                    name="document"
+                    rows={4}
+                    value={form.document}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-check form-switch mb-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="priority"
+                    name="priority"
+                    checked={form.priority}
+                    onChange={handleChange}
+                  />
+                  <label className="form-check-label" htmlFor="priority">
+                    Priority
+                  </label>
+                </div>
+
+                <button type="submit" className="btn btn-primary" disabled={submitting}>
+                  {submitting ? "Uploading..." : "Upload Document"}
+                </button>
+              </form>
+
+              {successMessage && (
+                <div className="alert alert-success mt-3">{successMessage}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
