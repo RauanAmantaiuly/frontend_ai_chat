@@ -96,21 +96,16 @@ export function UploadPage() {
           <div className="card shadow-sm h-100">
             <div className="card-body">
               <h3 className="card-title mb-3">Uploaded Documents</h3>
-              <div className="alert alert-info">
-                <h6 className="mb-3">Provided Document Details</h6>
-                <p className="mb-3">The following records are available:</p>
+              <div className="mb-3">
+                <h6 className="mb-3">Provided Documents</h6>
                 <div className="list-group">
                   {providedDocuments.map((doc) => (
-                    <div
-                      key={doc.DocumentID}
-                      className="list-group-item list-group-item-action"
-                    >
-                      <div className="d-flex justify-content-between align-items-start">
-                        <div>
-                          <div className="fw-semibold">{doc.DocumentName}</div>
-                          <div className="small text-muted">Document ID: {doc.DocumentID}</div>
-                        </div>
-                        <span className="badge text-bg-light text-dark">User: {doc.UserID}</span>
+                    <div key={doc.DocumentID} className="list-group-item">
+                      <div className="fw-semibold mb-1">
+                        Document name: {doc.DocumentName}
+                      </div>
+                      <div className="small text-muted">Document ID: {doc.DocumentID}</div>
+                      <div className="small text-muted">User: {doc.UserID}</div>
                       </div>
                     </div>
                   ))}
@@ -129,7 +124,7 @@ export function UploadPage() {
                   >
                     <div className="d-flex w-100 justify-content-between align-items-center">
                       <div>
-                        <h5 className="mb-1">Document Name: {doc.name || "Untitled"}</h5>
+                        <h5 className="mb-1">Document name: {doc.name || "Untitled"}</h5>
                         <div className="small text-muted">Document ID: {doc.id || "N/A"}</div>
                         <div className="small text-muted">Company: {doc.company_id}</div>
                       </div>
