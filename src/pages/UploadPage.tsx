@@ -13,7 +13,7 @@ const initialForm: DocumentPayload = {
 
 type DocumentListProps = {
   title: string;
-  documents: { name?: string; id?: string }[];
+  documents: { name?: string }[];
   emptyMessage: string;
 };
 
@@ -27,11 +27,10 @@ function DocumentList({ title, documents, emptyMessage }: DocumentListProps) {
         <ul className="list-group list-group-flush border rounded">
           {documents.map((doc, index) => (
             <li
-              key={`${doc.id ?? doc.name ?? "doc"}-${index}`}
+              key={`${doc.name ?? "doc"}-${index}`}
               className="list-group-item py-3"
             >
               <div className="fw-semibold">Document name: {doc.name?.trim() || "Untitled"}</div>
-              <div className="text-muted small">Document ID: {doc.id || "N/A"}</div>
             </li>
           ))}
         </ul>
@@ -120,7 +119,7 @@ export function UploadPage() {
                 <DocumentList
                   title="Uploaded documents"
                   documents={documents.map((doc) => ({
-                    name: doc.name
+                    name: doc.DocumentName ?? doc.name
                   }))}
                   emptyMessage="No documents uploaded yet."
                 />

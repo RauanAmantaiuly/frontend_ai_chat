@@ -6,7 +6,10 @@ export type DocumentPayload = {
   priority: boolean;
 };
 
-export type UploadedDocument = DocumentPayload & {
+export type UploadedDocument = Partial<DocumentPayload> & {
+  DocumentName?: string;
+  DocumentID?: string;
+  UserID?: string;
   created_at?: string;
 };
 
