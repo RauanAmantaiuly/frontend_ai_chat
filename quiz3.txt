@@ -1,0 +1,62 @@
+Run cat /etc/motd to see this message again                                                           
+
+Before ending an exam run 'history >> ~/history' to save your sequence of step.                       
+
+This is imitation of Fedora 41 machine.                                                               
+
+Important! This machine is not a real Virtual Machine. So, there are lots of features                 
+that are not available. Moreover, some features can differ from the real Linux Machine.               
+
+----------------------------------------------                                                        
+
+Your working directory is /home/kbtu. Save everything that related to your exam task in               
+this directory. Before editing config files, creating systemd units, etc, first, copy                 
+those files to the /home/kbtu.                                                                        
+
+After your time of the exam, this machine will be deleted with all files in it, and only              
+/home/kbtu is attached to the persistent storage.                                                     
+
+----------------------------------------------                                                        
+
+Use Rigth mouse button and context menu to copy and paste. If you want to paste something             
+from the host you need to choose "Copy from browser" and make Ctrl+V to the dialog window.            
+
+To copy something to your host machine, you need just select the text and press Ctrl+C.               
+
+----------------------------------------------                                                        
+
+Main Tips:                                                                                            
+1. Do not modify and enable SELinux. It should be disabled.                                           
+2. Do not stop shellinaboxd service                                                                   
+3. Do not reboot or shutdown a machine                                                                
+4. When running a container use "sudo podman" and "--network host" flag.                              
+5. Always use sudo podman and buildah                                                                 
+6. Do not download very large files or execute very resource consuming apps.                          
+7. Use nft to manage firewall                                                                         
+
+
+#############################################                                                         
+#                   TASK                    #                                                         
+#############################################                                                         
+
+Sources:                                                                                              
+- https://devhints.io/bash                                                                            
+- https://gist.github.com/LucaRottiers/6a6fb28ec9d98cffb125d722842a87ef                               
+
+Tasks:                                                                                                
+
+1. Create script "prepare_env" which checks that podman is installed and working, and prints          
+   out a version of podman and fails if podman is not exist or in invalid state (use info             
+   command), also this script should accept an image name and pull it if it is not exist.             
+2. Create script "prepare_fs" which accepts path, which creates a dir by specified path               
+   if it is not exist and adds a file "index.html" with "Hello, world!".                              
+3. Create script "deploy" which accepts host path, container path and image and creates a             
+   container with image and mounts a path provided by arguments. Container should have name           
+   as an image without path and tag, e.g. docker.io/lib/nginx:alpine => nginx                         
+4. Create script "setup" which accepts a container name and creates systemd service if it             
+   does not exist which starts, stops and restarts specified container.                               
+5. Create a script "rollout_nginx" which defines variables image=docker.io/nginx:alpine,              
+   host_path=/home/kbtu/nginx, container_path=/usr/share/nginx/html; executes "prepare_env",          
+   "prepare_fs", "deploy", "setup" and after all scripts executes curl localhost.                     
+
+[kbtu@c694777031fb ~]$ 
