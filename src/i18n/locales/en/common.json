@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "register": "Registration",
+    "upload": "Upload document",
+    "login": "Login",
+    "chat": "Chat"
+  },
+  "inputLabels": {
+    "phoneNumber": "Phone number",
+    "password": "Password"
+  },
+  "loginPage": {
+    "welcomeBack": "Welcome back",
+    "signInPlease": "Sign in to your account"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "register": "Регистрация",
+    "upload": "Загрузка документов",
+    "login": "Вход",
+    "chat": "Чат"
+  },
+  "inputLabels": {
+    "phoneNumber": "Номер телефона",
+    "password": "Пароль"
+  },
+  "loginPage": {
+    "welcomeBack": "Добро пожаловать",
+    "signInPlease": "Войдите в свой аккаунт"
+  }
+}

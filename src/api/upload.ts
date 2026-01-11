@@ -22,8 +22,8 @@ export async function fetchDocuments(): Promise<UploadedDocument[]> {
 
   const response = await fetch("http://localhost:4321/upload", {
     headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   if (!response.ok) {
     throw new Error("Failed to fetch documents");
@@ -39,9 +39,9 @@ export async function uploadDocument(payload: DocumentPayload) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {

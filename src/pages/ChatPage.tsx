@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import { sendChatMessage } from "../api/chat";
 
 type Message = {
@@ -11,8 +12,8 @@ export function ChatPage() {
     {
       role: "assistant",
       content:
-        "Привет! Я готов помочь с вопросами по документам и задачам. Задай свой вопрос, и я постараюсь ответить."
-    }
+        "Привет! Я готов помочь с вопросами по документам и задачам. Задай свой вопрос, и я постараюсь ответить.",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -37,15 +38,19 @@ export function ChatPage() {
       const response = await sendChatMessage(userMessage.content);
       const assistantMessage: Message = {
         role: "assistant",
-        content: response.reply
+        content: response.reply,
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Не удалось отправить сообщение";
+      const message =
+        err instanceof Error ? err.message : "Не удалось отправить сообщение";
       setError(message);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Произошла ошибка при обращении к бэкенду." }
+        {
+          role: "assistant",
+          content: "Произошла ошибка при обращении к бэкенду.",
+        },
       ]);
     } finally {
       setIsSending(false);
@@ -69,12 +74,16 @@ export function ChatPage() {
                     <div
                       key={`${message.role}-${index}`}
                       className={`d-flex ${
-                        message.role === "user" ? "justify-content-end" : "justify-content-start"
+                        message.role === "user"
+                          ? "justify-content-end"
+                          : "justify-content-start"
                       }`}
                     >
                       <div
                         className={`message-bubble ${
-                          message.role === "user" ? "message-user" : "message-assistant"
+                          message.role === "user"
+                            ? "message-user"
+                            : "message-assistant"
                         }`}
                       >
                         <div className="small text-muted mb-1 fw-semibold">
@@ -88,12 +97,18 @@ export function ChatPage() {
                 </div>
 
                 {error && (
-                  <div className="alert alert-danger rounded-0 mb-0" role="alert">
+                  <div
+                    className="alert alert-danger rounded-0 mb-0"
+                    role="alert"
+                  >
                     {error}
                   </div>
                 )}
 
-                <form onSubmit={handleSend} className="chat-input p-3 border-top bg-white">
+                <form
+                  onSubmit={handleSend}
+                  className="chat-input p-3 border-top bg-white"
+                >
                   <div className="input-group">
                     <textarea
                       className="form-control"
@@ -103,7 +118,11 @@ export function ChatPage() {
                       rows={1}
                       style={{ resize: "none" }}
                     />
-                    <button className="btn btn-primary d-flex align-items-center" type="submit" disabled={isSending}>
+                    <button
+                      className="btn btn-primary d-flex align-items-center"
+                      type="submit"
+                      disabled={isSending}
+                    >
                       {isSending ? "Sending..." : "Send"}
                     </button>
                   </div>

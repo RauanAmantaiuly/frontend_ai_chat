@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "register": "Тіркеу",
+    "upload": "Құжаттарды жүктеу",
+    "login": "Кіру",
+    "chat": "Чат"
+  },
+  "inputLabels": {
+    "phoneNumber": "Телефон нөмірі",
+    "password": "Құпия сөз"
+  },
+  "loginPage": {
+    "welcomeBack": "Қош келдіңіз",
+    "signInPlease": "Тіркелгіңізге кіріңіз"
+  }
+}

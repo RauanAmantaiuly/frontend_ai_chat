@@ -1,5 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
+
 import type { DocumentPayload, UploadedDocument } from "../api/upload";
 import { fetchDocuments, uploadDocument } from "../api/upload";
 
@@ -8,7 +9,7 @@ const initialForm: DocumentPayload = {
   document: "",
   name: "",
   company_id: "",
-  priority: false
+  priority: false,
 };
 
 type DocumentListProps = {
@@ -20,7 +21,9 @@ type DocumentListProps = {
 function DocumentList({ title, documents, emptyMessage }: DocumentListProps) {
   return (
     <div className="mb-4">
-      <h6 className="text-uppercase text-muted small fw-semibold mb-2">{title}</h6>
+      <h6 className="text-uppercase text-muted small fw-semibold mb-2">
+        {title}
+      </h6>
       {documents.length === 0 ? (
         <p className="text-muted mb-0 small">{emptyMessage}</p>
       ) : (
@@ -30,7 +33,9 @@ function DocumentList({ title, documents, emptyMessage }: DocumentListProps) {
               key={`${doc.name ?? "doc"}-${index}`}
               className="list-group-item py-3"
             >
-              <div className="fw-semibold">Document name: {doc.name?.trim() || "Untitled"}</div>
+              <div className="fw-semibold">
+                Document name: {doc.name?.trim() || "Untitled"}
+              </div>
             </li>
           ))}
         </ul>
@@ -54,7 +59,8 @@ export function UploadPage() {
       const data = await fetchDocuments();
       setDocuments(data);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to load documents";
+      const message =
+        err instanceof Error ? err.message : "Failed to load documents";
       setError(message);
     } finally {
       setLoading(false);
@@ -75,7 +81,7 @@ export function UploadPage() {
 
     setForm((prev) => ({
       ...prev,
-      [name]: isCheckbox ? target.checked : value
+      [name]: isCheckbox ? target.checked : value,
     }));
   };
 
@@ -111,7 +117,11 @@ export function UploadPage() {
                 </p>
               )}
               {error && (
-                <div className="alert alert-danger" role="alert" aria-live="assertive">
+                <div
+                  className="alert alert-danger"
+                  role="alert"
+                  aria-live="assertive"
+                >
                   {error}
                 </div>
               )}
@@ -119,7 +129,7 @@ export function UploadPage() {
                 <DocumentList
                   title="Uploaded documents"
                   documents={documents.map((doc) => ({
-                    name: doc.DocumentName ?? doc.name
+                    name: doc.DocumentName ?? doc.name,
                   }))}
                   emptyMessage="No documents uploaded yet."
                 />
@@ -132,8 +142,11 @@ export function UploadPage() {
           <div className="card shadow-sm h-100">
             <div className="card-body">
               <h3 className="card-title mb-3">Upload new document</h3>
-              <form onSubmit={handleSubmit} className="needs-validation" noValidate>
-
+              <form
+                onSubmit={handleSubmit}
+                className="needs-validation"
+                noValidate
+              >
                 <div className="mb-3">
                   <label className="form-label" htmlFor="request_id">
                     Request ID
@@ -205,7 +218,11 @@ export function UploadPage() {
                   </label>
                 </div>
 
-                <button type="submit" className="btn btn-primary" disabled={submitting}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={submitting}
+                >
                   {submitting ? "Uploading..." : "Upload Document"}
                 </button>
               </form>
