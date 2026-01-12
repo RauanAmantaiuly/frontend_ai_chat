@@ -9,8 +9,16 @@
     "phoneNumber": "Phone number",
     "password": "Password"
   },
+  "buttons": {
+    "login": "Login",
+    "register": "Register"
+  },
   "loginPage": {
     "welcomeBack": "Welcome back",
     "signInPlease": "Sign in to your account"
+  },
+  "registerPage": {
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create your account to begin"
   }
 }

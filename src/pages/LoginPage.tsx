@@ -124,7 +124,7 @@ export function LoginPage() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                     >
-                      Signing in…
+                      ...
                     </motion.span>
                   ) : (
                     <motion.span
@@ -133,7 +133,7 @@ export function LoginPage() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                     >
-                      Login
+                      {t("buttons.login")}
                     </motion.span>
                   )}
                 </AnimatePresence>

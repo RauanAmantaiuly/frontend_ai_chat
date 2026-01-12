@@ -9,8 +9,16 @@
     "phoneNumber": "Телефон нөмірі",
     "password": "Құпия сөз"
   },
+  "buttons": {
+    "login": "Кіру",
+    "register": "Тіркеу"
+  },
   "loginPage": {
     "welcomeBack": "Қош келдіңіз",
     "signInPlease": "Тіркелгіңізге кіріңіз"
+  },
+  "registerPage": {
+    "welcomeBack": "Қош келдіңіз",
+    "createAccount": "Бастау үшін есептік жазбаңызды жасаңыз"
   }
 }

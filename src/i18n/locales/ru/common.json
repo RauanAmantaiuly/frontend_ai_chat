@@ -9,8 +9,16 @@
     "phoneNumber": "Номер телефона",
     "password": "Пароль"
   },
+  "buttons": {
+    "login": "Вход",
+    "register": "Регистрация"
+  },
   "loginPage": {
     "welcomeBack": "Добро пожаловать",
     "signInPlease": "Войдите в свой аккаунт"
+  },
+  "registerPage": {
+    "welcomeBack": "Добро пожаловать",
+    "createAccount": "Создайте свой аккаунт чтобы начать"
   }
 }
