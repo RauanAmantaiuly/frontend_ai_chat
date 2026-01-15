@@ -29,7 +29,13 @@ export async function fetchDocuments(): Promise<UploadedDocument[]> {
     throw new Error("Failed to fetch documents");
   }
 
-  return response.json();
+  const json = await response.json();
+
+  if (json === null) return [];
+
+  if (Array.isArray(json)) return json;
+
+  return [];
 }
 
 export async function uploadDocument(payload: DocumentPayload) {
