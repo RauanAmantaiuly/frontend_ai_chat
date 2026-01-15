@@ -1,5 +1,6 @@
 import { FileText, Loader2, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { DocumentPayload, UploadedDocument } from "../api/upload";
 import { fetchDocuments, uploadDocument } from "../api/upload";
@@ -12,8 +13,11 @@ import {
 } from "../components/ui/card";
 import { Switch } from "../components/ui/switch";
 import { cn } from "../lib/utils";
+import { fileToBase64 } from "../shared/utils";
 
 export function UploadPage() {
+  const { t } = useTranslation();
+
   const [documents, setDocuments] = useState<UploadedDocument[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +37,7 @@ export function UploadPage() {
       const data = await fetchDocuments();
       setDocuments(data);
     } catch {
-      setError("Failed to load documents");
+      setError("errors.failedToLoadDocuments");
     } finally {
       setLoading(false);
     }
@@ -52,7 +56,7 @@ export function UploadPage() {
     setError(null);
 
     try {
-      const content = await file.text();
+      const content = await fileToBase64(file);
 
       const payload: DocumentPayload = {
         request_id: crypto.randomUUID(),
@@ -78,19 +82,20 @@ export function UploadPage() {
   return (
     <div className="mx-auto max-w-5xl p-6 space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Uploaded documents */}
         <Card>
           <CardHeader>
-            <CardTitle>Uploaded documents</CardTitle>
+            <CardTitle>
+              {t("uploadingDocumentPage.uploadedDocuments")}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {loading && (
-              <p className="text-sm text-muted-foreground">Loading…</p>
+              <p className="text-sm text-muted-foreground">{t("loading")}…</p>
             )}
 
             {!loading && documents.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                No documents uploaded yet.
+                {t("uploadingDocumentPage.listIsEmpty")}
               </p>
             )}
 
@@ -110,7 +115,7 @@ export function UploadPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Upload document</CardTitle>
+            <CardTitle>{t("inputLabels.uploadDocument")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <label
@@ -121,15 +126,21 @@ export function UploadPage() {
             >
               <Upload className="h-6 w-6 text-muted-foreground" />
               <span className="text-sm font-medium">
-                {file ? file.name : "Drop file here or click to select"}
+                {file ? file.name : t("uploadingDocumentPage.dropOrSelect")}
               </span>
               <span className="text-xs text-muted-foreground">
-                Any text-based document
+                {t("uploadingDocumentPage.anyTextDocument")}
               </span>
 
               <input
                 type="file"
                 className="hidden"
+                accept="
+                  .pdf,
+                  .doc,
+                  .docx,
+                  .txt,
+                "
                 onChange={(e) =>
                   e.target.files && handleFileSelect(e.target.files[0])
                 }
@@ -137,7 +148,9 @@ export function UploadPage() {
             </label>
 
             <div className="flex items-center justify-between rounded-md border p-3">
-              <span className="text-sm">Priority</span>
+              <span className="text-sm">
+                {t("uploadingDocumentPage.priority")}
+              </span>
               <Switch checked={priority} onCheckedChange={setPriority} />
             </div>
 
@@ -147,10 +160,10 @@ export function UploadPage() {
               onClick={handleUpload}
             >
               {uploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Upload
+              {t("buttons.upload")}
             </Button>
 
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p className="text-sm text-destructive">{t(error)}</p>}
             {success && <p className="text-sm text-green-600">{success}</p>}
           </CardContent>
         </Card>

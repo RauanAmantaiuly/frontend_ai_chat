@@ -1,17 +1,28 @@
 {
+  "loading": "Loading",
   "navigation": {
     "register": "Registration",
     "upload": "Upload document",
     "login": "Login",
-    "chat": "Chat"
+    "chat": "Chat",
+    "logout": "Exit",
+    "main": "Main"
+  },
+  "errors": {
+    "failedToLoadDocuments": "Failed to load documents"
   },
   "inputLabels": {
     "phoneNumber": "Phone number",
-    "password": "Password"
+    "password": "Password",
+    "uploadDocument": "Upload document"
+  },
+  "inputPlaceholders": {
+    "writeYourQuestion": "Write your question"
   },
   "buttons": {
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "upload": "Upload"
   },
   "loginPage": {
     "welcomeBack": "Welcome back",
@@ -20,5 +31,52 @@
   "registerPage": {
     "welcomeBack": "Welcome back",
     "createAccount": "Create your account to begin"
+  },
+  "uploadingDocumentPage": {
+    "uploadedDocuments": "Uploaded documents",
+    "listIsEmpty": "The list is empty",
+    "dropOrSelect": "Transfer the file or click to select",
+    "anyTextDocument": "Any text file",
+    "priority": "Priority"
+  },
+  "chatPage": {
+    "chatWithBot": "Chat with bot"
+  },
+  "mainPage": {
+    "badge": "AI-powered document chat",
+    "titleLine1": "Upload documents.",
+    "titleLine2": "Chat with knowledge.",
+    "description": "Upload PDFs, contracts, or notes and instantly ask questions. Your documents become a smart AI assistant.",
+    "uploadButton": "Upload document",
+    "chatButton": "Open chat",
+    "howItWorks": "How it works",
+    "features": {
+      "smartParsing": {
+        "title": "Smart document parsing",
+        "description": "We analyze and structure your documents so the AI understands context, not just text."
+      },
+      "askQuestions": {
+        "title": "Ask real questions",
+        "description": "Chat naturally with your documents. Get summaries, explanations, and insights."
+      },
+      "security": {
+        "title": "Private & secure",
+        "description": "Your documents stay private. We never expose or share uploaded data."
+      }
+    },
+    "steps": {
+      "upload": {
+        "title": "Upload",
+        "description": "Upload PDFs or text documents in seconds."
+      },
+      "process": {
+        "title": "Process",
+        "description": "We index and understand your document content."
+      },
+      "chat": {
+        "title": "Chat",
+        "description": "Ask questions and get instant AI answers."
+      }
+    }
   }
 }

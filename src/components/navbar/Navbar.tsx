@@ -1,7 +1,7 @@
-import { Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { LanguageSwitcher } from "../language/LanguageSwitcher";
 import { ThemeToggle } from "../theme/ThemeToggle";
@@ -15,15 +15,27 @@ type NavItem = {
 
 export function Navbar() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+  const isAuthenticated = localStorage.getItem("access_token");
 
-  const links: readonly NavItem[] = [
-    { to: "/upload", label: t("navigation.upload") },
-    { to: "/chat", label: t("navigation.chat") },
-    { to: "/login", label: t("navigation.login") },
-    { to: "/register", label: t("navigation.register") },
-  ];
+  const links: readonly NavItem[] = isAuthenticated
+    ? [
+        { to: "/", label: t("navigation.main") },
+        { to: "/chat", label: t("navigation.chat") },
+        { to: "/upload", label: t("navigation.upload") },
+      ]
+    : [
+        { to: "/", label: t("navigation.main") },
+        { to: "/login", label: t("navigation.login") },
+        { to: "/register", label: t("navigation.register") },
+      ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    navigate("/login", { replace: true });
+  };
 
   return (
     <header
@@ -40,7 +52,7 @@ export function Navbar() {
           AI DOCS
         </NavLink>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           <nav className="flex gap-1">
             {links.map((link) => (
               <Button key={link.to} variant="ghost" asChild>
@@ -60,10 +72,18 @@ export function Navbar() {
 
           <LanguageSwitcher />
           <ThemeToggle />
+
+          {isAuthenticated && (
+            <Button variant="ghost" onClick={handleLogout}>
+              <LogOut className="mr-1 h-4 w-4" />
+              {t("navigation.logout")}
+            </Button>
+          )}
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
           <LanguageSwitcher />
+          <ThemeToggle />
 
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
