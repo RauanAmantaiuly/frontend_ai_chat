@@ -73,7 +73,7 @@ export function RegisterPage() {
                   {t("inputLabels.phoneNumber")}
                 </label>
                 <MaskedInput
-                  mask="+{7} (000) 000-00-00"
+                  // mask="+{7} (000) 000-00-00"
                   value={phone}
                   onChangeValue={setPhone}
                   placeholder="+7 (777) 777-77-77"
