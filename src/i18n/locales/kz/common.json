@@ -1,0 +1,82 @@
+{
+  "loading": "Күте тұрыңыз",
+  "navigation": {
+    "register": "Тіркеу",
+    "upload": "Құжаттарды жүктеу",
+    "login": "Кіру",
+    "chat": "Чат",
+    "logout": "Шығу",
+    "main": "Басты бет"
+  },
+  "errors": {
+    "failedToLoadDocuments": "Файлды жүктеу қатесі"
+  },
+  "inputLabels": {
+    "phoneNumber": "Телефон нөмірі",
+    "password": "Құпия сөз",
+    "uploadDocument": "Құжатты жүктеу"
+  },
+  "inputPlaceholders": {
+    "writeYourQuestion": "Сұрағыңызды жазыңыз"
+  },
+  "buttons": {
+    "login": "Кіру",
+    "register": "Тіркеу",
+    "upload": "Жүктеу"
+  },
+  "loginPage": {
+    "welcomeBack": "Қош келдіңіз",
+    "signInPlease": "Тіркелгіңізге кіріңіз"
+  },
+  "registerPage": {
+    "welcomeBack": "Қош келдіңіз",
+    "createAccount": "Бастау үшін есептік жазбаңызды жасаңыз"
+  },
+  "uploadingDocumentPage": {
+    "uploadedDocuments": "Жүктелген құжаттар",
+    "listIsEmpty": "Тізім бос",
+    "dropOrSelect": "Файлды тасымалдаңыз немесе таңдау үшін басыңыз",
+    "anyTextDocument": "Кез келген мәтіндік файл",
+    "priority": "Басымдық"
+  },
+  "chatPage": {
+    "chatWithBot": "Ботпен сөйлесу"
+  },
+  "mainPage": {
+    "badge": "ИИ негізіндегі құжат чаты",
+    "titleLine1": "Құжаттарды жүктеңіз.",
+    "titleLine2": "Біліммен сөйлесіңіз.",
+    "description": "PDF, келісімшарт немесе жазбаларды жүктеп, бірден сұрақ қойыңыз. Құжаттарыңыз ақылды ИИ көмекшісіне айналады.",
+    "uploadButton": "Құжатты жүктеу",
+    "chatButton": "Чатты ашу",
+    "howItWorks": "Бұл қалай жұмыс істейді",
+    "features": {
+      "smartParsing": {
+        "title": "Құжаттарды ақылды талдау",
+        "description": "Біз құжаттарыңызды талдап, құрылымдаймыз, сонда ИИ тек мәтінді емес, мағынаны түсінеді."
+      },
+      "askQuestions": {
+        "title": "Нақты сұрақтар қойыңыз",
+        "description": "Құжаттармен табиғи түрде сөйлесіңіз. Қысқаша жауаптар мен түсіндірмелер алыңыз."
+      },
+      "security": {
+        "title": "Қауіпсіз және құпия",
+        "description": "Құжаттарыңыз жеке болып қалады. Біз деректерді таратпаймыз."
+      }
+    },
+    "steps": {
+      "upload": {
+        "title": "Жүктеу",
+        "description": "PDF немесе мәтіндік файлды бірнеше секундта жүктеңіз."
+      },
+      "process": {
+        "title": "Өңдеу",
+        "description": "Біз құжат мазмұнын талдап, индекстейміз."
+      },
+      "chat": {
+        "title": "Чат",
+        "description": "Сұрақ қойып, ИИ жауаптарын алыңыз."
+      }
+    }
+  }
+}

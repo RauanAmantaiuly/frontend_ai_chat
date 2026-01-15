@@ -2,7 +2,7 @@ export async function register(phone: string, password: string) {
   const res = await fetch("http://localhost:4321/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone, password })
+    body: JSON.stringify({ phone, password }),
   });
 
   if (!res.ok) {
@@ -16,7 +16,7 @@ export async function login(phone: string, password: string) {
   const res = await fetch("http://localhost:4321/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone, password })
+    body: JSON.stringify({ phone, password }),
   });
 
   if (!res.ok) {

@@ -1,5 +1,18 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Loader2, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import { sendChatMessage } from "../api/chat";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Textarea } from "../components/ui/textarea";
+import { cn } from "../lib/utils";
 
 type Message = {
   role: "user" | "assistant";
@@ -7,17 +20,37 @@ type Message = {
 };
 
 export function ChatPage() {
+  const { t } = useTranslation();
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content:
-        "Привет! Я готов помочь с вопросами по документам и задачам. Задай свой вопрос, и я постараюсь ответить."
-    }
+        "Привет! Я готов помочь с вопросами по документам и задачам. Задай свой вопрос, и я постараюсь ответить.",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+
+  const messageVariants = {
+    hidden: (isUser: boolean) => ({
+      opacity: 0,
+      y: 8,
+      x: isUser ? 20 : -20,
+    }),
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 24,
+      },
+    },
+  };
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,17 +68,20 @@ export function ChatPage() {
 
     try {
       const response = await sendChatMessage(userMessage.content);
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: response.reply
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: response.reply },
+      ]);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Не удалось отправить сообщение";
+      const message =
+        err instanceof Error ? err.message : "Не удалось отправить сообщение";
       setError(message);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Произошла ошибка при обращении к бэкенду." }
+        {
+          role: "assistant",
+          content: "Произошла ошибка при обращении к бэкенду.",
+        },
       ]);
     } finally {
       setIsSending(false);
@@ -53,66 +89,85 @@ export function ChatPage() {
   };
 
   return (
-    <div className="chat-page d-flex flex-column">
-      <div className="container py-4 flex-grow-1 d-flex flex-column">
-        <div className="row justify-content-center flex-grow-1">
-          <div className="col-lg-8 d-flex flex-column gap-3">
-            <header className="d-flex flex-column gap-1">
-              {/* <p className="text-uppercase text-muted small fw-semibold mb-0">Новый чат</p> */}
-              <h1 className="h3 fw-bold mb-0">Chat with MyAI</h1>
-            </header>
+    <div className="mx-auto flex h-[calc(100vh-4rem)] max-w-4xl flex-col p-4">
+      <Card className="flex h-full flex-col">
+        <CardHeader>
+          <CardTitle className="text-xl">{t("chatPage.chatWithBot")}</CardTitle>
+        </CardHeader>
 
-            <div className="card shadow-sm flex-grow-1 overflow-hidden chat-card">
-              <div className="card-body bg-light d-flex flex-column p-0">
-                <div className="chat-window flex-grow-1">
-                  {messages.map((message, index) => (
+        <CardContent className="flex flex-1 flex-col gap-4 overflow-hidden">
+          <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+            <AnimatePresence initial={false}>
+              {messages.map((message, index) => {
+                const isUser = message.role === "user";
+
+                return (
+                  <motion.div
+                    key={`${message.role}-${index}`}
+                    custom={isUser}
+                    variants={messageVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    layout
+                    className={cn(
+                      "flex",
+                      isUser ? "justify-end" : "justify-start"
+                    )}
+                  >
                     <div
-                      key={`${message.role}-${index}`}
-                      className={`d-flex ${
-                        message.role === "user" ? "justify-content-end" : "justify-content-start"
-                      }`}
+                      className={cn(
+                        "max-w-[80%] rounded-lg px-4 py-2 text-sm leading-relaxed",
+                        isUser
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-foreground"
+                      )}
                     >
-                      <div
-                        className={`message-bubble ${
-                          message.role === "user" ? "message-user" : "message-assistant"
-                        }`}
-                      >
-                        <div className="small text-muted mb-1 fw-semibold">
-                          {message.role === "user" ? "Вы" : "MyAI"}
-                        </div>
-                        <div className="message-text">{message.content}</div>
+                      <div className="mb-1 text-xs font-medium opacity-70">
+                        {isUser ? "Вы" : "MyAI"}
+                      </div>
+                      <div className="whitespace-pre-wrap break-all">
+                        {message.content}
                       </div>
                     </div>
-                  ))}
-                  <div ref={chatEndRef} />
-                </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
 
-                {error && (
-                  <div className="alert alert-danger rounded-0 mb-0" role="alert">
-                    {error}
-                  </div>
-                )}
-
-                <form onSubmit={handleSend} className="chat-input p-3 border-top bg-white">
-                  <div className="input-group">
-                    <textarea
-                      className="form-control"
-                      placeholder="Write your question..."
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      rows={1}
-                      style={{ resize: "none" }}
-                    />
-                    <button className="btn btn-primary d-flex align-items-center" type="submit" disabled={isSending}>
-                      {isSending ? "Sending..." : "Send"}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
+            <div ref={chatEndRef} />
           </div>
-        </div>
-      </div>
+
+          {error && <p className="text-sm text-destructive">{error}</p>}
+
+          <form
+            onSubmit={handleSend}
+            className="flex items-end gap-2 border-t pt-3"
+          >
+            <Textarea
+              placeholder={t("inputPlaceholders.writeYourQuestion")}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              rows={1}
+              className="resize-none"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend(e);
+                }
+              }}
+            />
+
+            <Button type="submit" disabled={isSending}>
+              {isSending ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
