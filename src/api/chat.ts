@@ -13,7 +13,15 @@ export async function sendChatMessage(
       "Content-Type": "application/json",
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({
+      messages: [
+        {
+          content: message,
+          role: "user",
+        },
+      ],
+      rquid: crypto.randomUUID(),
+    }),
   });
 
   if (!res.ok) {
