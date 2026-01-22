@@ -34,24 +34,6 @@ export function ChatPage() {
   const [error, setError] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
-  const messageVariants = {
-    hidden: (isUser: boolean) => ({
-      opacity: 0,
-      y: 8,
-      x: isUser ? 20 : -20,
-    }),
-    visible: {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 24,
-      },
-    },
-  };
-
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -60,7 +42,11 @@ export function ChatPage() {
     event.preventDefault();
     if (!input.trim() || isSending) return;
 
-    const userMessage: Message = { role: "user", content: input.trim() };
+    const userMessage: Message = {
+      role: "user",
+      content: input.trim(),
+    };
+
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsSending(true);
@@ -92,11 +78,13 @@ export function ChatPage() {
     <div className="mx-auto flex h-[calc(100vh-4rem)] max-w-4xl flex-col p-4">
       <Card className="flex h-full flex-col">
         <CardHeader>
-          <CardTitle className="text-xl">{t("chatPage.chatWithBot")}</CardTitle>
+          <CardTitle className="text-xl">
+            {t("chatPage.chatWithBot")}
+          </CardTitle>
         </CardHeader>
 
-        <CardContent className="flex flex-1 flex-col gap-4 overflow-hidden">
-          <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+        <CardContent className="flex flex-1 flex-col overflow-hidden">
+          <div className="flex-1 space-y-4 overflow-y-auto pr-2">
             <AnimatePresence initial={false}>
               {messages.map((message, index) => {
                 const isUser = message.role === "user";
@@ -104,12 +92,9 @@ export function ChatPage() {
                 return (
                   <motion.div
                     key={`${message.role}-${index}`}
-                    custom={isUser}
-                    variants={messageVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    layout
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.15 }}
                     className={cn(
                       "flex",
                       isUser ? "justify-end" : "justify-start"
@@ -117,16 +102,16 @@ export function ChatPage() {
                   >
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-lg px-4 py-2 text-sm leading-relaxed",
+                        "max-w-[80%] rounded-lg px-4 py-2 text-sm",
                         isUser
                           ? "bg-primary text-primary-foreground"
                           : "bg-muted text-foreground"
                       )}
                     >
-                      <div className="mb-1 text-xs font-medium opacity-70">
+                      <div className="mb-1 text-xs font-semibold opacity-70">
                         {isUser ? "Вы" : "MyAI"}
                       </div>
-                      <div className="whitespace-pre-wrap break-all">
+                      <div className="whitespace-pre-wrap break-words">
                         {message.content}
                       </div>
                     </div>
@@ -138,11 +123,13 @@ export function ChatPage() {
             <div ref={chatEndRef} />
           </div>
 
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && (
+            <p className="mt-2 text-sm text-destructive">{error}</p>
+          )}
 
           <form
             onSubmit={handleSend}
-            className="flex items-end gap-2 border-t pt-3"
+            className="mt-3 flex items-end gap-2 border-t pt-3"
           >
             <Textarea
               placeholder={t("inputPlaceholders.writeYourQuestion")}
@@ -150,12 +137,6 @@ export function ChatPage() {
               onChange={(e) => setInput(e.target.value)}
               rows={1}
               className="resize-none"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSend(e);
-                }
-              }}
             />
 
             <Button type="submit" disabled={isSending}>
