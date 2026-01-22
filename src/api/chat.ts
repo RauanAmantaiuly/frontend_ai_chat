@@ -1,5 +1,8 @@
 export type ChatMessageResponse = {
-  reply: string;
+  message: {
+    role: string;
+    content: string;
+  }
 };
 
 export async function sendChatMessage(
