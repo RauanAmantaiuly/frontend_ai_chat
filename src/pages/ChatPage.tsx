@@ -56,7 +56,7 @@ export function ChatPage() {
       const response = await sendChatMessage(userMessage.content);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: response.reply },
+        { role: "assistant", content: response.message.content },
       ]);
     } catch (err) {
       const message =
